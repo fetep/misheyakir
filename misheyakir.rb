@@ -16,7 +16,7 @@ class Misheyakir
   # @param minute how many minutes into day
   # @return angle of sun
   def sun_pos(day, minute)
-    rad = BigDecimal(3.14159265358979, 15) / BigDecimal(180)
+    rad = Math::PI / BigDecimal(180)
     hour = minute / 60
 
     # ajd == astronomical julian day
