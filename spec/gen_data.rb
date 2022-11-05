@@ -44,7 +44,7 @@ threads.each { |t| t.join }
 
 # collate into test data. one time per line for each day in 2022 (in order)
 times.keys.sort.each do |date|
-  puts "%d:%02d (#{date})" % times[date]
+  puts "%d:%02d" % times[date]
 end
 
 data_path = File.join(__dir__, "test#{year}.data")

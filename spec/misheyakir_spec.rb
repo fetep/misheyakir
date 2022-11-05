@@ -38,7 +38,6 @@ describe "Misheyakir" do
     aggregate_failures "every day check" do
       File.read(data_path).split.each do |time|
         i += 1
-        break if i > 30
         exp_hour, exp_minute = time.split(":", 2)
         hour, minute = @m.time(day)
         expect([hour, minute]).to eq([exp_hour.to_i, exp_minute.to_i]),
