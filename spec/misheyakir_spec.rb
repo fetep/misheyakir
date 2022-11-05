@@ -30,7 +30,7 @@ describe "Misheyakir" do
     expect(@m.time(day)).to eq([3, 3])
   end
 
-  it "should calculate misheyakir time for every day in 2022" do
+  it "should calculate misheyakir time for every day in 2022", :slow => true do
     data_path = File.join(__dir__, "test2022.data")
 
     day = Date.new(2022, 1, 1)
