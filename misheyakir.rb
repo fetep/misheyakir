@@ -77,25 +77,46 @@ class Misheyakir
     return ae + af # ag
   end
 
-  # calculate misheyakir time for a given date
+  # calculate misheyakir time for a given date by looking for the first minute in the
+  # day that we are past @sun_angle. (so if it happens at 8:01:01, we return 2. it should
+  # always be the minute past misheyakir, not the minute of).
   # @param day Date object
   # @return hour, minute misheyakir time for given day
   def time(day)
-    # find the first minute in the day that we are past @sun_angle
-    minute = nil
-    0.upto(60 * 12).each do |m|
-      angle = sun_pos(day, m)
-      if angle > @sun_angle
-        minute = m
-        break
+    # sun_pos starts negative and is increasing as minutes go higher (sun is rising).
+    # we assume that our lat/lng/tz gives us a minute=0 where the sun is rising.
+    max_minute = 60 * 12
+
+    # read through cache for minute->sun_pos
+    angles = Hash.new { |h, k| h[k] = sun_pos(day, k) }
+
+    lower = 0
+    upper = max_minute
+
+    if @sun_angle < angles[lower] or @sun_angle > angles[upper]
+      raise "#{day}: misheyakir does not happen in the first #{max_minute} minutes (check TZ?)"
+    end
+
+    count = 0
+    loop do
+      mid = lower + ((upper - lower) / 2).floor
+
+      # we need the *first* minute where the angle goes past @sun_angle
+      if angles[mid] > @sun_angle && angles[mid - 1] <= @sun_angle
+        return [mid / 60, mid % 60]
       end
-    end
 
-    # did we make it 12 hours without finding an appropriate minute?
-    if minute.nil?
-      raise "#{day}: no time found where angle is over #{@sun_angle}"
-    end
+      # we didn't get there; pick another half to keep looking in.
+      if angles[mid] > @sun_angle
+        # we overshot; lower the upper threshold to the current middle
+        upper = mid
+      else
+        # we undershot; raise the lower threshold to the current middle
+        lower = mid
+      end
 
-    return [minute / 60, minute % 60]
+      count += 1
+      raise "#{day}: infinite loop detecting mid (#{lower}/#{upper})" if count > 100
+    end
   end
 end
