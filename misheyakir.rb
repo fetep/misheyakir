@@ -4,6 +4,8 @@ require "bigdecimal"
 require "date"
 
 class Misheyakir
+  MAX_MINUTE_DIFF = 0.5
+
   def initialize(lat=0, lng=0, tz=0, sun_angle=-12.9)
     @lat, @lng, @tz = lat, lng, tz
     @sun_angle = sun_angle - BigDecimal(0.266666, 10) # top of sun
@@ -101,12 +103,24 @@ class Misheyakir
     loop do
       mid = lower + ((upper - lower) / 2).floor
 
-      # we need the *first* minute where the angle goes past @sun_angle
+      # we assume that the angle difference between consecutive minutes is never greater
+      # than MAX_MINUTE_DIFF. So if angles[mid] is more than MAX_MINUTE_DIFF away from
+      # @sun_angle, we know this isn't the right minute.
+      diff = angles[mid] - @sun_angle
+      if diff > 0 && diff >= MAX_MINUTE_DIFF
+        upper = mid
+        next
+      elsif diff < 0 && diff <= -1 * MAX_MINUTE_DIFF
+        lower = mid
+        next
+      end
+
+      # check if we are exactly the minute the angle becomes greater than @sun_angle
       if angles[mid] > @sun_angle && angles[mid - 1] <= @sun_angle
         return [mid / 60, mid % 60]
       end
 
-      # we didn't get there; pick another half to keep looking in.
+      # pick another half to keep looking in
       if angles[mid] > @sun_angle
         # we overshot; lower the upper threshold to the current middle
         upper = mid
