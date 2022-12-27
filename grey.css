@@ -1,0 +1,67 @@
+<style>
+/*
+  A grey based theme, inspired by Blinksale and their ColorBurn widget. http://firewheeldesign.com
+
+  AUTHOR: Geoffrey Grosenbach http://nubyonrails.com
+
+  Colors:
+    dk: 787888
+    lt: 4f4f5b
+    lter: a8a8a8
+    white: ffffff
+*/
+
+/* TODO */
+
+* {
+  box-sizing: border-box;
+}
+
+
+.row {
+  display: flex;
+}
+
+.calendar {
+  color: black;
+  text-align: center;
+
+  flex: 50%;
+  padding: 15px;
+  height: 100px;
+}
+
+thead tr {
+  color: black;
+}
+
+.monthName th {
+  font-weight: normal;
+  text-align: right;
+  padding-top: 1em;
+  padding-bottom: 0.7em;
+  color: black;
+}
+
+.dayName th {
+  font-size: 0.7em;
+  padding-top: 0.6em;
+  padding-bottom: 0.3em;
+  background-color: #303030;
+  color: white;
+}
+
+.otherMonth, .day, .specialDay {
+  paddinG: 0.7em 1em;
+  border: 1px solid black;
+}
+
+.otherMonth {
+  color: white;
+}
+
+.day, .specialDay {
+  border-bottom: 1px solid #111111;
+  #background-color: #333333;
+}
+</style>

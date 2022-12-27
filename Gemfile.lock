@@ -1,8 +1,12 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    calendar_helper (0.2.6)
+      open4
     concurrent-ruby (1.1.10)
     diff-lcs (1.5.0)
+    open4 (1.3.4)
+    pdfkit (0.8.7.2)
     rspec (3.12.0)
       rspec-core (~> 3.12.0)
       rspec-expectations (~> 3.12.0)
@@ -21,7 +25,9 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  calendar_helper
   concurrent-ruby
+  pdfkit
   rspec
 
 BUNDLED WITH
