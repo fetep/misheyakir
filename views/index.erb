@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <title>Misheyakir Schedule Generator</title>
+  </head>
+  <body>
+    <h1>Misheyakir Calendar Generator</h1>
+
+    <br />
+    <br />
+
+    <form method="get" action="/calendar">
+      <div class="row">
+        <div class="form-group col-md-1">
+          <label for="lat">Latitude</label>
+          <input type="text" class="form-control" id="lat">
+        </div>
+        <div class="form-group col-md-1">
+          <label for="lat">Longitude</label>
+          <input type="text" class="form-control" id="lng">
+        </div>
+        <div class="form-group col-md-3">
+          <label for="lat">Location Name</label>
+          <input type="text" class="form-control" id="name">
+        </div>
+      </div>
+
+      <br />
+
+      <div class="form-group col-md-1">
+        <button type="submit" class="btn btn-primary">Generate</button>
+      </div>
+    </form>
+
+  </body>
+</html>
