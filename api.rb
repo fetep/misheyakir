@@ -40,15 +40,21 @@ get "/" do
 end
 
 get "/calendar" do
-  lat = params[:lat].to_f
-  lng = params[:lng].to_f
-  year = params[:year].to_i
-
-  if lat == 0
+  begin
+    lat = Float(params[:lat])
+  rescue ArgumentError
     raise "invalid lat #{params[:lat].inspect}"
-  elsif lng == 0
+  end
+
+  begin
+    lng = Float(params[:lng])
+  rescue ArgumentError
     raise "invalid lng #{params[:lng].inspect}"
-  elsif year == 0
+  end
+
+  begin
+    year = Integer(params[:year])
+  rescue ArgumentError
     raise "invalid year #{params[:year].inspect}"
   end
 
