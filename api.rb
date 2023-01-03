@@ -51,7 +51,7 @@ get "/calendar" do
 
   content_type "application/pdf"
   kit = PDFKit.new(html, :page_size => "Letter")
-  kit.stylesheets << "grey.css"
+  kit.stylesheets << "views/grey.css"
   kit.to_pdf
 end
 
