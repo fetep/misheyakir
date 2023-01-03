@@ -7,21 +7,30 @@
     <h1>Misheyakir Calendar Generator</h1>
 
     <br />
+    <% if error %>
+      <div class="alert alert-danger" role="alert">
+        <%= error %>
+      </div>
+    <% end %>
     <br />
 
     <form method="get" action="/calendar">
       <div class="row">
         <div class="form-group col-md-1">
           <label for="lat">Latitude</label>
-          <input type="text" class="form-control" id="lat">
+          <input type="text" class="form-control" id="lat" name="lat" value="<%= lat %>">
         </div>
         <div class="form-group col-md-1">
           <label for="lat">Longitude</label>
-          <input type="text" class="form-control" id="lng">
+          <input type="text" class="form-control" id="lng" name="lng" value="<%= lng %>">
         </div>
         <div class="form-group col-md-3">
           <label for="lat">Location Name</label>
-          <input type="text" class="form-control" id="name">
+          <input type="text" class="form-control" id="name" name="name" value="<%= name %>">
+        </div>
+        <div class="form-group col-md-1">
+          <label for="lat">Year</label>
+          <input type="text" class="form-control" id="year" name="year" value="<%= year %>">
         </div>
       </div>
 

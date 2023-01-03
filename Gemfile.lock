@@ -4,9 +4,17 @@ GEM
     calendar_helper (0.2.6)
       open4
     concurrent-ruby (1.1.10)
+    daemons (1.4.1)
     diff-lcs (1.5.0)
+    eventmachine (1.2.7)
+    multi_json (1.15.0)
+    mustermann (3.0.0)
+      ruby2_keywords (~> 0.0.1)
     open4 (1.3.4)
     pdfkit (0.8.7.2)
+    rack (2.2.5)
+    rack-protection (3.0.5)
+      rack
     rspec (3.12.0)
       rspec-core (~> 3.12.0)
       rspec-expectations (~> 3.12.0)
@@ -20,6 +28,25 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.12.0)
     rspec-support (3.12.0)
+    ruby2_keywords (0.0.5)
+    sinatra (3.0.5)
+      mustermann (~> 3.0)
+      rack (~> 2.2, >= 2.2.4)
+      rack-protection (= 3.0.5)
+      tilt (~> 2.0)
+    sinatra-contrib (3.0.5)
+      multi_json
+      mustermann (~> 3.0)
+      rack-protection (= 3.0.5)
+      sinatra (= 3.0.5)
+      tilt (~> 2.0)
+    sinatra-reloader (1.0)
+      sinatra-contrib
+    thin (1.8.1)
+      daemons (~> 1.0, >= 1.0.9)
+      eventmachine (~> 1.0, >= 1.0.4)
+      rack (>= 1, < 3)
+    tilt (2.0.11)
 
 PLATFORMS
   x86_64-linux
@@ -29,6 +56,9 @@ DEPENDENCIES
   concurrent-ruby
   pdfkit
   rspec
+  sinatra
+  sinatra-reloader
+  thin
 
 BUNDLED WITH
    2.3.7
