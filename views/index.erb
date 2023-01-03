@@ -28,6 +28,16 @@
           <label for="lat">Location Name</label>
           <input type="text" class="form-control" id="name" name="name" value="<%= name %>">
         </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-2">
+          <label for="tz">Timezone</label>
+          <select class="form-select" aria-label="Timezone" name="tz">
+            <% tz_list.each do |_tz| %>
+              <option value="<%= _tz %>" <%= tz == _tz ? "selected" : "" %>><%= _tz %></option>
+            <% end %>
+          </select>
+        </div>
         <div class="form-group col-md-1">
           <label for="lat">Year</label>
           <input type="text" class="form-control" id="year" name="year" value="<%= year %>">

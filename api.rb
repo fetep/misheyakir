@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 
 require "./misheyakir"
+require "active_support"
+require "active_support/core_ext/time/zones"
 require "calendar_helper"
 require "erb"
 require "pdfkit"
@@ -9,16 +11,32 @@ require "sinatra/reloader"
 
 include CalendarHelper
 
+also_reload "misheyakir.rb"
+
 set :show_exceptions, false
 
-get "/" do
+configure do
+  set :tz_list, [
+    "US/Eastern",
+    "US/Central",
+    "US/Pacific",
+  ]
+end
+
+def render_index(params, error=nil)
   erb :index, :locals => {
-    :error => nil,
-    :lat => nil,
-    :lng => nil,
-    :name => nil,
-    :year => Time.now.year,
+    :error => error,
+    :lat => params[:lat] ? params[:lat] : nil,
+    :lng => params[:lng] ? params[:lng] : nil,
+    :name => params[:name] ? params[:name] : nil,
+    :tz => params[:tz] ? params[:tz] : nil,
+    :tz_list => settings.tz_list,
+    :year => params[:year] ? params[:year] : Time.now.year,
   }
+end
+
+get "/" do
+  render_index({})
 end
 
 get "/calendar" do
@@ -34,7 +52,12 @@ get "/calendar" do
     raise "invalid year #{params[:year].inspect}"
   end
 
-  m = Misheyakir.new(lat, lng, -5, -12.9)
+  begin
+    tz = TZInfo::Timezone.get(params[:tz])
+  rescue Exception => e
+    raise "invalid timezone #{params[:tz].inspect}: #{e.message}"
+  end
+  m = Misheyakir.new(lat, lng, tz, -12.9)
 
   cal_tmpl = ERB.new(File.read("views/calendar.erb"))
   html = cal_tmpl.result(binding)
@@ -56,11 +79,5 @@ get "/calendar" do
 end
 
 error Exception do
-  erb :index, :locals => {
-    :error => env["sinatra.error"].message,
-    :lat => params[:lat],
-    :lng => params[:lng],
-    :name => params[:name],
-    :year => params[:year],
-  }
+  render_index(params, env["sinatra.error"].message)
 end
