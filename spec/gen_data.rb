@@ -10,7 +10,7 @@ require "date"
 require "rspec"
 
 # coords/timezone/angle used in spec code
-m = Misheyakir.new(40.785, -74.3, -5, -12.9)
+m = Misheyakir.new(40.785, -74.3, TZInfo::Timezone.get('US/Eastern'), -12.9)
 year = 2022
 
 threads = []

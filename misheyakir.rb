@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
 
+require "active_support/core_ext/time/zones"
 require "bigdecimal"
-require "date"
 
 class Misheyakir
   MAX_MINUTE_DIFF = 0.5
 
-  def initialize(lat=0, lng=0, tz=0, sun_angle=-12.9)
+  def initialize(lat=0, lng=0, tz=TZInfo::Timezone.get('UTC'), sun_angle=-12.9)
     @lat, @lng, @tz = lat, lng, tz
     @sun_angle = sun_angle - BigDecimal(0.266666, 10) # top of sun
   end
@@ -21,8 +21,15 @@ class Misheyakir
     rad = Math::PI / BigDecimal(180)
     hour = minute / 60
 
+    # calculate tz offset for #{day}, respecting DST
+    tz_offset = @tz.utc_offset / (60 * 60)
+    today_t = Time.new(day.year, day.month, day.day, 0, 0, 0, @tz)
+    if today_t.dst?
+      tz_offset += 1
+    end
+
     # ajd == astronomical julian day
-    f = BigDecimal(day.ajd, 15) + (BigDecimal(minute) / (60.0*24.0)) - (@tz / 24.0)
+    f = BigDecimal(day.ajd, 15) + (BigDecimal(minute) / (60.0 * 24.0)) - (tz_offset / 24.0)
     g = (f - 2451545) / BigDecimal(36525)
     i = (BigDecimal(280.46646, 10) + \
         g * (BigDecimal(36000.76983, 10) + \
@@ -49,7 +56,7 @@ class Misheyakir
              0.5 * u * u * Math.sin(4 * rad * i) - \
              1.25 * k * k * Math.sin(2 * rad * j)
             ) / rad
-    ab = (minute + v + 4 * @lng -60 * @tz) % 1440
+    ab = (minute + v + 4 * @lng -60 * tz_offset) % 1440
 
     if ab / 4.0 < 0
       ac = ab / 4.0 + 180

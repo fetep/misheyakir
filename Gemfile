@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'activesupport'
 gem 'calendar_helper'
 gem 'concurrent-ruby', require: 'concurrent'
 gem 'rspec'
