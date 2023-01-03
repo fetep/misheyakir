@@ -20,13 +20,10 @@ class Misheyakir
   def sun_pos(day, minute)
     rad = Math::PI / BigDecimal(180)
     hour = minute / 60
+    minute_offset = minute - (hour * 60)
 
-    # calculate tz offset for #{day}, respecting DST
+    # calculate tz offset for #{day}
     tz_offset = @tz.utc_offset / (60 * 60)
-    today_t = Time.new(day.year, day.month, day.day, 0, 0, 0, @tz)
-    if today_t.dst?
-      tz_offset += 1
-    end
 
     # ajd == astronomical julian day
     f = BigDecimal(day.ajd, 15) + (BigDecimal(minute) / (60.0 * 24.0)) - (tz_offset / 24.0)
@@ -124,7 +121,23 @@ class Misheyakir
 
       # check if we are exactly the minute the angle becomes greater than @sun_angle
       if angles[mid] > @sun_angle && angles[mid - 1] <= @sun_angle
-        return [mid / 60, mid % 60]
+        m_hour =mid / 60
+        m_min = mid % 60
+
+        # Check if we need a DST offset. We think there is a bug in the dst? method that uses
+        # the date to check DST, not the actual time. DST starts/ends at 2am, so if the mish time
+        # is after 2am, we check dst? on the next day.
+        if m_hour < 2
+          dst_day = day
+        else
+          dst_day = day + 1
+        end
+        today_t = Time.new(dst_day.year, dst_day.month, dst_day.day, m_hour, m_min, 0, @tz)
+        if today_t.dst?
+          m_hour += 1
+        end
+
+        return [m_hour, m_min]
       end
 
       # pick another half to keep looking in
