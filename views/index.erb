@@ -14,45 +14,47 @@
     <% end %>
     <br />
 
-    <form method="get" action="/calendar">
-      <div class="row">
-        <div class="form-group col-md-2">
-          <label for="lat">Latitude</label>
-          <input type="text" class="form-control" id="lat" name="lat" value="<%= lat %>">
+    <div class="container-fluid">
+      <form method="get" action="/calendar">
+        <div class="row">
+          <div class="form-group col-md-2">
+            <label for="lat">Latitude</label>
+            <input type="text" class="form-control" id="lat" name="lat" value="<%= lat %>">
+          </div>
+          <div class="form-group col-md-2">
+            <label for="lat">Longitude</label>
+            <input type="text" class="form-control" id="lng" name="lng" value="<%= lng %>">
+          </div>
+          <div class="form-group col-md-3">
+            <label for="lat">Location Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="<%= name %>">
+          </div>
         </div>
-        <div class="form-group col-md-2">
-          <label for="lat">Longitude</label>
-          <input type="text" class="form-control" id="lng" name="lng" value="<%= lng %>">
-        </div>
-        <div class="form-group col-md-3">
-          <label for="lat">Location Name</label>
-          <input type="text" class="form-control" id="name" name="name" value="<%= name %>">
-        </div>
-      </div>
 
-      <br />
+        <br />
 
-      <div class="row">
-        <div class="form-group col-md-2">
-          <label for="tz">Timezone</label>
-          <select class="form-select" aria-label="Timezone" name="tz">
-            <% tz_list.each do |_tz| %>
-              <option value="<%= _tz %>" <%= tz == _tz ? "selected" : "" %>><%= _tz %></option>
-            <% end %>
-          </select>
+        <div class="row">
+          <div class="form-group col-md-2">
+            <label for="tz">Timezone</label>
+            <select class="form-select" aria-label="Timezone" name="tz">
+              <% tz_list.each do |_tz| %>
+                <option value="<%= _tz %>" <%= tz == _tz ? "selected" : "" %>><%= _tz %></option>
+              <% end %>
+            </select>
+          </div>
+          <div class="form-group col-md-1">
+            <label for="lat">Year</label>
+            <input type="text" class="form-control" id="year" name="year" value="<%= year %>">
+          </div>
         </div>
+
+        <br />
+
         <div class="form-group col-md-1">
-          <label for="lat">Year</label>
-          <input type="text" class="form-control" id="year" name="year" value="<%= year %>">
+          <button type="submit" class="btn btn-primary">Generate</button>
         </div>
-      </div>
-
-      <br />
-
-      <div class="form-group col-md-1">
-        <button type="submit" class="btn btn-primary">Generate</button>
-      </div>
-    </form>
+      </form>
+    </div>
 
   </body>
 </html>
